@@ -1,7 +1,9 @@
 { self, ... }:
 {
   # Import all your configuration modules here
-  imports = [ ./bufferline.nix ];
+  imports = [ ./bufferline.nix 
+    ./lsp/default.nix
+  ];
 
   colorschemes.gruvbox.enable = true;
 
@@ -9,19 +11,6 @@
     lualine.enable = true;
     # parser
     treesitter.enable = true;
-  };
-
-  plugins.lsp = {
-    enable = true;
-    servers = {
-      rust_analyzer = {enable = true;
-        installCargo = true;
-        installRustc = true;
-      };
-      omnisharp.enable = true; # C# 
-      nixd.enable = true; # nix LSP
-
-    };
   };
 
   opts = {
@@ -33,7 +22,7 @@
     expandtab = true; # Expand <Tab> to spaces in Insert mode (local to buffer)
     autoindent = true; # Do clever autoindenting
   };
-  
+
   plugins.telescope = {
     enable = true;
     keymaps = {
@@ -45,7 +34,9 @@
         };
       };
     };
-    extensions.fzf-native = { enable = true; };
+    extensions.fzf-native = {
+      enable = true;
+    };
   };
-  
+
 }

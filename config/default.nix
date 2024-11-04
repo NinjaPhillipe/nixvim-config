@@ -1,7 +1,8 @@
 { self, ... }:
 {
   # Import all your configuration modules here
-  imports = [ ./bufferline.nix 
+  imports = [
+    ./bufferline.nix
     ./lsp/default.nix
   ];
 
@@ -38,5 +39,19 @@
       enable = true;
     };
   };
+
+  globals.mapleader = ",";
+
+  keymaps = [
+    {
+      mode = [
+        "n"
+        "v"
+      ];
+      key = "<C-s>i";
+      options.script = true;
+      action = ":lua vim.lsp.buf.format()<Enter>";
+    }
+  ];
 
 }

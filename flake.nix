@@ -47,6 +47,7 @@
             default = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
           };
 
+          packages.default = nvim;
           # Lets you run `nix run .` to start nixvim
           packages = {
             ripgrep = ripgrep;

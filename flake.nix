@@ -34,6 +34,7 @@
             };
           };
           nvim = nixvim'.makeNixvimWithModule nixvimModule;
+
         in
         {
           checks = {
@@ -44,6 +45,20 @@
           packages = {
             # Lets you run `nix run .` to start nixvim
             default = nvim;
+          };
+          #devShells.default = import ./shell.nix { inherit pkgs; };
+          devShells.default = pkgs.mkShell {
+            buildInputs = [ pkgs.ripgrep ];
+          };
+
+          devShells.${system} = {
+            # Define a per-system devShell that includes `ripgrep` and any other system-specific tools
+            default = pkgs.mkShell {
+              buildInputs = [ pkgs.ripgrep ];
+              shellHook = ''
+                echo "Welcome to the development shell for ${system}!"
+              '';
+            };
           };
         };
     };

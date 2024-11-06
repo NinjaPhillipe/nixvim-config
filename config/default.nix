@@ -1,4 +1,4 @@
-{ self, ... }:
+{ self, config, pkgs, ... }:
 {
   # Import all your configuration modules here
   imports = [
@@ -22,6 +22,8 @@
     shiftwidth = 4; # Number of spaces used for each step of (auto)indent (local to buffer)
     expandtab = true; # Expand <Tab> to spaces in Insert mode (local to buffer)
     autoindent = true; # Do clever autoindenting
+
+    clipboard = "unnamedplus"; # share clipboard with os
   };
 
   plugins.telescope = {
@@ -53,5 +55,4 @@
       action = ":lua vim.lsp.buf.format()<Enter>";
     }
   ];
-
 }

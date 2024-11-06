@@ -11,7 +11,12 @@
   };
 
   outputs =
-    { nixvim, flake-parts, ... }@inputs:
+    {
+      nixvim,
+      nixpkgs,
+      flake-parts,
+      ...
+    }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
@@ -34,7 +39,7 @@
             };
           };
           nvim = nixvim'.makeNixvimWithModule nixvimModule;
-
+          ripgrep = nixpkgs.legacyPackages.${system}.ripgrep;
         in
         {
           checks = {
@@ -42,24 +47,12 @@
             default = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
           };
 
+          # Lets you run `nix run .` to start nixvim
           packages = {
-            # Lets you run `nix run .` to start nixvim
-            default = nvim;
-          };
-          #devShells.default = import ./shell.nix { inherit pkgs; };
-          devShells.default = pkgs.mkShell {
-            buildInputs = [ pkgs.ripgrep ];
+            ripgrep = ripgrep;
+            nvim = nvim;
           };
 
-          devShells.${system} = {
-            # Define a per-system devShell that includes `ripgrep` and any other system-specific tools
-            default = pkgs.mkShell {
-              buildInputs = [ pkgs.ripgrep ];
-              shellHook = ''
-                echo "Welcome to the development shell for ${system}!"
-              '';
-            };
-          };
         };
     };
 }

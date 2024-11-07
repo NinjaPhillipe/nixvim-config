@@ -1,9 +1,15 @@
-{ self, config, pkgs, ... }:
+{
+  self,
+  config,
+  pkgs,
+  ...
+}:
 {
   # Import all your configuration modules here
   imports = [
     ./bufferline.nix
     ./lsp/default.nix
+    ./plugins/default.nix
   ];
 
   colorschemes.gruvbox.enable = true;
@@ -26,21 +32,6 @@
     clipboard = "unnamedplus"; # share clipboard with os
   };
 
-  plugins.telescope = {
-    enable = true;
-    keymaps = {
-      "<leader>fg" = "live_grep";
-      "<C-p>" = {
-        action = "git_files";
-        options = {
-          desc = "Telescope Git Files";
-        };
-      };
-    };
-    extensions.fzf-native = {
-      enable = true;
-    };
-  };
 
   globals.mapleader = ",";
 

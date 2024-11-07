@@ -38,8 +38,18 @@
               # inherit (inputs) foo;
             };
           };
+
+          # Define your nixvim setup with additional dependencies
           nvim = nixvim'.makeNixvimWithModule nixvimModule;
-          ripgrep = nixpkgs.legacyPackages.${system}.ripgrep;
+
+          # Additional tools you want available in the environment
+          tools = [
+            pkgs.ripgrep # Add ripgrep here
+            # Add other dependencies here as needed
+          ];
+          
+          # Construct the PATH by joining the bin paths of each tool
+          toolsPath = builtins.concatStringsSep ":" (map (tool: "${tool}/bin") tools);
         in
         {
           checks = {
@@ -47,13 +57,19 @@
             default = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
           };
 
-          packages.default = nvim;
-          # Lets you run `nix run .` to start nixvim
-          packages = {
-            ripgrep = ripgrep;
-            nvim = nvim;
-          };
+              # Create an executable wrapper for nixvim as the default package, with tools in the PATH
+          packages.default = pkgs.writeShellScriptBin "nixvim" ''
+            #!${pkgs.stdenv.shell}
+            export PATH=${toolsPath}:${nvim}/bin:$PATH
+            exec ${nvim}/bin/nvim "$@"
+          '';
 
+          # Define a development shell with dependencies
+          devShells = {
+            default = pkgs.mkShell {
+              buildInputs = tools ++ [nvim];
+            };
+          };
         };
     };
 }

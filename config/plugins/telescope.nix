@@ -10,6 +10,7 @@
           desc = "Telescope Git Files";
         };
       };
+      "<C-f>f" = "find_files";
     };
     extensions.fzf-native = {
       enable = true;

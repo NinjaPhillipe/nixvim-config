@@ -34,16 +34,4 @@
 
 
   globals.mapleader = ",";
-
-  keymaps = [
-    {
-      mode = [
-        "n"
-        "v"
-      ];
-      key = "<C-s>i";
-      options.script = true;
-      action = ":lua vim.lsp.buf.format()<Enter>";
-    }
-  ];
 }

@@ -12,7 +12,7 @@
         installCargo = true;
         installRustc = true;
       };
-      omnisharp.enable = true; # C#
+      csharp-ls.enable = true; # C#
     };
   };
 
